@@ -1,0 +1,76 @@
+<body>
+</body>
+
+<script>
+var canv, ctx;
+var board = [],blocks = [];
+var width = 600, height = 600;
+var scl = 20;
+var sclWidth = width / scl,sclHeight = height / scl;
+
+function Block(m) {
+	this.m = m;
+	
+	this.xOff = sclWidth / 2;
+	this.yOff = 0;
+}
+
+Block.prototype.update = function(){
+	this.yOff += 1;
+}
+
+
+Block.prototype.draw = function() {
+	for(let x = 0;x < this.m.length;x++) {
+		for(let y = 0;y < this.m[x].length;y++){
+			if(this.m[x][y] === 1){
+				ctx.fillStyle = 'red';
+				ctx.fillRect((x + this.xOff) * scl,(this.yOff + y) * scl,scl,scl);
+				ctx.fill();
+			}
+		}
+		
+	}
+	
+}
+
+
+
+function main() {
+	canv = document.createElement('canvas');
+	ctx = canv.getContext('2d');
+	
+	canv.width = width;
+	canv.height = height;
+	
+	canv.style.backgroundColor = '#000000';
+	
+	document.body.appendChild(canv);
+	
+	init();
+	var loop = function() {
+		logic();
+		ctx.clearRect(0,0,width,height);
+		draw();
+	}
+	setInterval(loop,400);
+}
+
+function init() {
+	blocks.push(new Block([
+		[1,1,1],
+		[0,1,0]
+	]))
+}
+
+function logic() {
+	blocks[0].update();
+}
+
+function draw() {
+	blocks[0].draw();
+}
+
+main();
+
+</script>
